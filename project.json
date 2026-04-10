@@ -1,0 +1,24 @@
+{
+  "overview": "A GPS-based smart garbage truck management system with three role-based views — Owner, Driver, and Public — in a single unified app. Owners monitor vehicle fleets and driver status. Drivers activate GPS, report waste fill levels, and communicate with owners and customers. Customers request pickups, track trucks live, and access helpline numbers.",
+  "features": [
+    "Role-based login for Owner, Driver, and Public users",
+    "Owner dashboard with vehicle fleet, driver profiles, and on-duty status",
+    "Driver portal with GPS toggle, waste fill percentage reporting, and duty status",
+    "Public view with live GPS truck tracking, garbage pickup requests, and complaint form",
+    "In-app messaging between all roles with unread indicators",
+    "Click-to-call for drivers, helpline, and women's helpline numbers",
+    "Smart Pay tip UI with PhonePe, GPay, Paytm, and Post Office Savings Account links",
+    "Automatic thank-you message after tip submission",
+    "Driver profile with name, age, phone, blood group, address, and photo"
+  ],
+  "category": "productivity",
+  "tags": [
+    "gps-tracking",
+    "fleet-management",
+    "garbage-collection",
+    "smart-city",
+    "chat",
+    "role-based-access"
+  ],
+  "last_updated": "2026-04-10T20:40:53.023Z"
+}

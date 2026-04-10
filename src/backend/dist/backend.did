@@ -1,0 +1,160 @@
+type VehiclePublic = 
+ record {
+   assignedDriverId: opt UserId;
+   id: nat;
+   makeModel: text;
+   vehicleNumber: text;
+ };
+type UserId = principal;
+type TipPublic = 
+ record {
+   amount: nat;
+   customerId: UserId;
+   driverId: UserId;
+   id: nat;
+   provider: TipProvider;
+   timestamp: Timestamp;
+ };
+type TipProvider = 
+ variant {
+   gPay;
+   other: text;
+   paytm;
+   phonePe;
+   postOfficeSavings;
+ };
+type Timestamp = int;
+type SubmitTipInput = 
+ record {
+   amount: nat;
+   driverId: UserId;
+   provider: TipProvider;
+ };
+type SubmitComplaintInput = 
+ record {
+   category: ComplaintCategory;
+   "text": text;
+ };
+type Role = 
+ variant {
+   customer;
+   driver;
+   owner;
+ };
+type RegisterResult = 
+ variant {
+   alreadyExists;
+   ok: UserId;
+ };
+type PickupStatus = 
+ variant {
+   accepted;
+   cancelled;
+   completed;
+   pending;
+ };
+type PickupRequestPublic = 
+ record {
+   address: text;
+   createdAt: Timestamp;
+   customerId: UserId;
+   driverId: opt UserId;
+   id: nat;
+   latitude: float64;
+   longitude: float64;
+   status: PickupStatus;
+   updatedAt: Timestamp;
+ };
+type MessagePublic = 
+ record {
+   id: nat;
+   read: bool;
+   receiverId: UserId;
+   senderId: UserId;
+   "text": text;
+   timestamp: Timestamp;
+ };
+type GpsLocationPublic = 
+ record {
+   active: bool;
+   latitude: float64;
+   longitude: float64;
+   timestamp: Timestamp;
+ };
+type DutyStatus = 
+ variant {
+   offDuty;
+   onDuty;
+ };
+type DriverStatePublic = 
+ record {
+   dutyStatus: DutyStatus;
+   fillPercent: nat;
+   id: UserId;
+   location: opt GpsLocationPublic;
+ };
+type DriverProfilePublic = 
+ record {
+   address: text;
+   age: nat;
+   bloodGroup: text;
+   id: UserId;
+   name: text;
+   phone: text;
+   photoKey: opt text;
+ };
+type CreatePickupInput = 
+ record {
+   address: text;
+   latitude: float64;
+   longitude: float64;
+ };
+type ComplaintPublic = 
+ record {
+   category: ComplaintCategory;
+   customerId: UserId;
+   id: nat;
+   "text": text;
+   timestamp: Timestamp;
+ };
+type ComplaintCategory = 
+ variant {
+   driverBehavior;
+   missedPickup;
+   other: text;
+   vehicleCondition;
+ };
+service : {
+  acceptPickupRequest: (requestId: nat) -> (bool);
+  addVehicle: (vehicleNumber: text, makeModel: text, assignedDriverId:
+   opt UserId) -> (nat);
+  assignDriver: (vehicleId: nat, driverId: opt UserId) -> ();
+  createPickupRequest: (input: CreatePickupInput) -> (nat);
+  getDriverProfile: (driverId: UserId) -> (opt DriverProfilePublic) query;
+  getDriverState: (driverId: UserId) -> (opt DriverStatePublic) query;
+  getMessageThread: (otherId: UserId) -> (vec MessagePublic) query;
+  getMyPickupRequest: (requestId: nat) -> (opt PickupRequestPublic) query;
+  getMyRole: () -> (opt Role) query;
+  getVehicle: (id: nat) -> (opt VehiclePublic) query;
+  isRegistered: () -> (bool) query;
+  listAllPickupRequests: () -> (vec PickupRequestPublic) query;
+  listComplaints: () -> (vec ComplaintPublic) query;
+  listDriverProfiles: () -> (vec DriverProfilePublic) query;
+  listDriverStates: () -> (vec DriverStatePublic) query;
+  listMyPickupRequests: () -> (vec PickupRequestPublic) query;
+  listMyTips: () -> (vec TipPublic) query;
+  listPendingPickupRequests: () -> (vec PickupRequestPublic) query;
+  listVehicles: () -> (vec VehiclePublic) query;
+  markThreadRead: (senderId: UserId) -> ();
+  register: (role: Role, displayName: text) -> (RegisterResult);
+  sendMessage: (receiverId: UserId, "text": text) -> (nat);
+  setDutyStatus: (status: DutyStatus) -> ();
+  setFillPercent: (percent: nat) -> ();
+  submitComplaint: (input: SubmitComplaintInput) -> (nat);
+  submitTip: (input: SubmitTipInput) -> (nat);
+  unreadMessageCount: (senderId: UserId) -> (nat) query;
+  updateLocation: (latitude: float64, longitude: float64, active: bool) -> ();
+  updatePickupStatus: (requestId: nat, status: PickupStatus) -> (bool);
+  upsertDriverProfile: (name: text, age: nat, phone: text, bloodGroup: 
+   text, address: text, photoKey: opt text) -> ();
+}

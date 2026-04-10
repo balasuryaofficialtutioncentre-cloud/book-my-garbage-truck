@@ -1,0 +1,157 @@
+// Version: 1.0.0
+type ComplaintCategory__159567554 =
+  {#driverBehavior; #missedPickup; #other : Text; #vehicleCondition};
+type Complaint__979997601 =
+  {
+    category : ComplaintCategory__159567554;
+    customerId : UserId__126448575;
+    id : Nat;
+    text : Text;
+    timestamp : Timestamp__536740657
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DriverProfile__160182687 =
+  {
+    var address : Text;
+    var age : Nat;
+    var bloodGroup : Text;
+    id : UserId__654814472;
+    var name : Text;
+    var phone : Text;
+    var photoKey : ?Text
+  };
+type DriverState__134373389 =
+  {
+    var dutyStatus : DutyStatus__692626913;
+    var fillPercent : Nat;
+    id : UserId__654814472;
+    var location : ?GpsLocation__1016688988
+  };
+type DutyStatus__692626913 = {#offDuty; #onDuty};
+type GpsLocation__1016688988 =
+  {
+    var active : Bool;
+    latitude : Float;
+    longitude : Float;
+    timestamp : Timestamp__284034812
+  };
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Message__804209456 =
+  {
+    id : Nat;
+    var read : Bool;
+    receiverId : UserId__343168941;
+    senderId : UserId__343168941;
+    text : Text;
+    timestamp : Timestamp__233637616
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PickupRequest__754867950 =
+  {
+    address : Text;
+    createdAt : Timestamp__172734047;
+    customerId : UserId__266858338;
+    var driverId : ?UserId__266858338;
+    id : Nat;
+    latitude : Float;
+    longitude : Float;
+    var status : PickupStatus__662827248;
+    var updatedAt : Timestamp__172734047
+  };
+type PickupStatus__662827248 = {#accepted; #cancelled; #completed; #pending};
+type Role__300349085 = {#customer; #driver; #owner};
+type Timestamp__172734047 = Timestamp__301639476;
+type Timestamp__233637616 = Timestamp__301639476;
+type Timestamp__283604404 = Timestamp__301639476;
+type Timestamp__284034812 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__536740657 = Timestamp__301639476;
+type TipProvider__974407111 =
+  {#gPay; #other : Text; #paytm; #phonePe; #postOfficeSavings};
+type Tip__863785650 =
+  {
+    amount : Nat;
+    customerId : UserId__604759732;
+    driverId : UserId__604759732;
+    id : Nat;
+    provider : TipProvider__974407111;
+    timestamp : Timestamp__283604404
+  };
+type UserId__126448575 = UserId__158757552;
+type UserId__158757552 = Principal;
+type UserId__266858338 = UserId__158757552;
+type UserId__343168941 = UserId__158757552;
+type UserId__604759732 = UserId__158757552;
+type UserId__654814472 = UserId__158757552;
+type UserId__87987360 = UserId__158757552;
+type UserProfile__129828592 =
+  {
+    var displayName : Text;
+    id : UserId__158757552;
+    var role : Role__300349085
+  };
+type Vehicle__138210770 =
+  {
+    var assignedDriverId : ?UserId__87987360;
+    id : Nat;
+    var makeModel : Text;
+    var vehicleNumber : Text
+  };
+actor {
+  stable var complaintCounter : {var next : Nat};
+  stable complaints :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Complaint__979997601]];
+      var elementIndex : Nat__490723111
+    };
+  stable driverProfiles :
+    {
+      var root : Node__46230540<UserId__158757552, DriverProfile__160182687>;
+      var size : Nat__490723111
+    };
+  stable driverStates :
+    {
+      var root : Node__46230540<UserId__158757552, DriverState__134373389>;
+      var size : Nat__490723111
+    };
+  stable messages :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Message__804209456]];
+      var elementIndex : Nat__490723111
+    };
+  stable var msgCounter : {var next : Nat};
+  stable var pickupCounter : {var next : Nat};
+  stable pickupRequests :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?PickupRequest__754867950]];
+      var elementIndex : Nat__490723111
+    };
+  stable var tipCounter : {var next : Nat};
+  stable tips :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Tip__863785650]];
+      var elementIndex : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__129828592>;
+      var size : Nat__490723111
+    };
+  stable var vehicleCounter : {var next : Nat};
+  stable vehicles :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Vehicle__138210770]];
+      var elementIndex : Nat__490723111
+    }
+};
